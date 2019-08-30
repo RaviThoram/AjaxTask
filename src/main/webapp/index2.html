@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<input type="text" value="pass" name="username1" id="uname" onblur="checkUser()" >
+<label id="visible" style="color: red; visibility: hidden; font-size: 90px;">Invalid  Username</label>
+<label id="visible1" style="color: blue; visibility: hidden; font-size: 90px;">valid  Username</label>
+
+<script>
+ function checkUser() {
+	 var btn2 = document.getElementById("uname");
+var ourRequest = new XMLHttpRequest();
+   var userName=document.getElementById("uname").value;
+   var JSONObj = JSON.stringify({
+		userName : userName
+	});
+  
+	//ourRequest.open("POST", "LoginServlet",true);
+	ourRequest.onreadystatechange=function(){
+		console.log(this.status);
+		console.log(this.readystate);
+	if( this.status==409 && this.readyState==4){
+			var response = JSON.parse(ourRequest.responseText);
+			if (response["result"].localeCompare("invalid") == 0) {
+			document.getElementById("visible").style.visibility = "visible";
+			}
+	}
+			else{
+				//document.getElementById("visible").innerHTML = "valid Username";
+				document.getElementById("visible1").style.visibility = "visible";
+
+			}
+		
+	}
+	ourRequest.open("POST", "LoginServlet",true);
+	ourRequest.send();
+
+}
+</script>
+</body>
+</html>
